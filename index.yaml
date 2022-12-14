@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  isaac-react-app:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2022-12-14T18:42:55.170389216Z"
+    description: A Helm chart for Kubernetes
+    digest: 762a9a3364f31011beb4f1b75abbad5351b19e9ffd8ce8479362828424b5df97
+    name: isaac-react-app
+    type: application
+    urls:
+    - https://github.com/pelotech/isaac-charts/releases/download/isaac-react-app-0.1.2/isaac-react-app-0.1.2.tgz
+    version: 0.1.2
+generated: "2022-12-14T18:42:55.170395516Z"
