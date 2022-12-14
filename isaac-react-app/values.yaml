@@ -1,5 +1,5 @@
 image:
-  repository: ghcr.io/pelotech/isaac-react-app-phy
+  repository: ghcr.io/pelotech/isaac-react-app-cs
   tag: latest
   pullPolicy: IfNotPresent
 
