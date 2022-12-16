@@ -75,15 +75,19 @@ service:
   port: 80
 
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: enabled
+  className: "alb"
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: shared-alb
+    alb.ingress.kubernetes.io/group.name: shared-group
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: 'ip'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
   hosts:
-    - host: chart-example.local
+    - host: www.isaac.classis.io
       paths:
-        - path: /
+        - path: /api/*
           pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
