@@ -44,7 +44,7 @@ elastic-search:
       memory: "300Mi"
     limits:
       cpu: "2000m"
-      memory: "100Mi"
+      memory: "1Gi"
 
 
 
