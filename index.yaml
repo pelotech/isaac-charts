@@ -3,6 +3,29 @@ entries:
   isaac-app:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-12-16T22:29:17.184303944Z"
+    dependencies:
+    - alias: isaac-app-fe
+      name: nginx
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.2.18
+    - alias: isaac-app-renderer
+      name: nginx
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.2.18
+    - alias: elastic-search
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    description: A Helm chart for Kubernetes
+    digest: af79316d2791b1da961be44b48e90def70e7d17b625ac1c1876778854e0867fd
+    name: isaac-app
+    type: application
+    urls:
+    - https://github.com/pelotech/isaac-charts/releases/download/isaac-app-0.1.3/isaac-app-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-12-16T21:36:21.846234291Z"
     dependencies:
     - alias: isaac-app-fe
@@ -69,4 +92,4 @@ entries:
     urls:
     - https://github.com/pelotech/isaac-charts/releases/download/isaac-react-app-0.1.2/isaac-react-app-0.1.2.tgz
     version: 0.1.2
-generated: "2022-12-16T21:36:21.846250291Z"
+generated: "2022-12-16T22:29:17.184322744Z"
