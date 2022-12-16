@@ -32,7 +32,11 @@ isaac-app-renderer:
     type: ClusterIP
   containerPorts:
     http: 80
-
+elastic-search:
+  persistence: false
+  replicas: 1
+  secret:
+    password: "testing123"
 
 
 
