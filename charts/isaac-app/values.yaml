@@ -38,6 +38,13 @@ elastic-search:
   replicas: 1
   secret:
     password: "testing123"
+  resources: # bad needs fixed but temp on current hardware
+    requests:
+      cpu: "100m"
+      memory: "300Mi"
+    limits:
+      cpu: "2000m"
+      memory: "100Mi"
 
 
 
