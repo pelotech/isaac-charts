@@ -33,7 +33,8 @@ isaac-app-renderer:
   containerPorts:
     http: 80
 elastic-search:
-  persistence: false
+  persistence:
+    enabled: false
   replicas: 1
   secret:
     password: "testing123"
