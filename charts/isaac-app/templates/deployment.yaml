@@ -37,6 +37,12 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+          env:
+            - name: SEGUE_CONFIG_LOCATION
+              value: {{ .Values.config.segueConfigPath }}
+            - name: JAVA_OPTIONS
+              value: -Dlog.path={{ .Values.config.logPath }} -Dsegue.version={{ .Values.config.apiVersion}}
+
           livenessProbe:
             httpGet:
               path: /
@@ -47,6 +53,12 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+
+      volumes:
+        {{- toYaml .Values.volumes | nindent 8 }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
