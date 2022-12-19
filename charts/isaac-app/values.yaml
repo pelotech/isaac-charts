@@ -33,6 +33,13 @@ isaac-app-renderer:
   containerPorts:
     http: 80
 elastic-search:
+  protocol: http
+  createCert: false
+  imageTag: 8.5.3
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: false
+      xpack.security.transport.ssl.enabled: false
   clusterName: isaac
   persistence:
     enabled: false
