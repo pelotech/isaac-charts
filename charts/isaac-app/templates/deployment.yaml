@@ -39,9 +39,9 @@ spec:
               protocol: TCP
           env:
             - name: SEGUE_CONFIG_LOCATION
-              value: {{ .Values.config.segueConfigPath }}
+              value: /local/data/conf/segue-config.properties
             - name: JAVA_OPTIONS
-              value: -Dlog.path={{ .Values.config.logPath }} -Dsegue.version={{ .Values.config.apiVersion}}
+              value: -Dsegue.version={{ .Values.config.apiVersion}}
 
           livenessProbe:
             httpGet:
@@ -53,11 +53,15 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+
           volumeMounts:
-            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          - name: isaacConfig
+            mountPath: /local/data/conf
 
       volumes:
-        {{- toYaml .Values.volumes | nindent 8 }}
+      - name: isaacConfig
+        secret:
+          secretName: {{ Values.config.secretName }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

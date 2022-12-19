@@ -60,17 +60,7 @@ fullnameOverride: ""
 
 config:
   apiVersion: v3.3.2-snapshot
-  logPath: /isaac-logs
-  segueConfigPath: &segueConfigPath /local/data/conf/
-
-volumeMounts:
-- name: isaacConfig
-  mountPath: *segueConfigPath
-
-volumes:
-- name: isaacConfig
-  secret:
-    secretName: isaac-secrets
+  secretName: isaac-secrets
 
 serviceAccount:
   # Specifies whether a service account should be created
