@@ -33,6 +33,7 @@ isaac-app-renderer:
   containerPorts:
     http: 80
 elastic-search:
+  clusterName: isaac
   persistence:
     enabled: false
   replicas: 1
@@ -49,10 +50,9 @@ elastic-search:
 replicaCount: 1
 
 image:
-  registry: ghcr.io
-  repository: pelotech/isaac-api
+  repository: ghcr.io/pelotech/isaac-api
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 imagePullSecrets: []
 nameOverride: ""

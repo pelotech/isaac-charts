@@ -42,24 +42,24 @@ spec:
               value: /local/data/conf/segue-config.properties
             - name: JAVA_OPTIONS
               value: -Dsegue.version={{ .Values.config.apiVersion}}
-
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+{{/*reenable*/}}
+{{/*          livenessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /*/}}
+{{/*              port: http*/}}
+{{/*          readinessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /*/}}
+{{/*              port: http*/}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
           volumeMounts:
-          - name: isaacConfig
+          - name: isaac-config
             mountPath: /local/data/conf
 
       volumes:
-      - name: isaacConfig
+      - name: isaac-config
         secret:
           secretName: {{ .Values.config.secretName }}
 
