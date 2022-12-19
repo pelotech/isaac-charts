@@ -61,7 +61,7 @@ spec:
       volumes:
       - name: isaacConfig
         secret:
-          secretName: {{ Values.config.secretName }}
+          secretName: {{ .Values.config.secretName }}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:
