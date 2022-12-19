@@ -61,7 +61,7 @@ fullnameOverride: ""
 config:
   apiVersion: v3.3.2-snapshot
   logPath: /isaac-logs
-  segueConfigPath: &segueConfigPath /local/data/conf/segue-config.properties
+  segueConfigPath: &segueConfigPath /local/data/conf/
 
 volumeMounts:
 - name: segueConfig
