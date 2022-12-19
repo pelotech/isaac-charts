@@ -64,13 +64,13 @@ config:
   segueConfigPath: &segueConfigPath /local/data/conf/
 
 volumeMounts:
-- name: segueConfig
+- name: isaacConfig
   mountPath: *segueConfigPath
 
 volumes:
-- name: segueConfig
+- name: isaacConfig
   secret:
-    secretName: segue-config-properties
+    secretName: isaac-secrets
 
 serviceAccount:
   # Specifies whether a service account should be created
