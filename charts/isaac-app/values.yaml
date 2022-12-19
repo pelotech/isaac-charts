@@ -46,19 +46,21 @@ elastic-search:
       cpu: "2000m"
       memory: "1Gi"
 
-
-
 replicaCount: 1
 
 image:
-  repository: nginx
+  registry: ghcr.io
+  repository: pelotech/isaac-api
+  tag: latest
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+config:
+  apiVersion: v3.3.2-snapshot
+  secretName: isaac-secrets
 
 serviceAccount:
   # Specifies whether a service account should be created

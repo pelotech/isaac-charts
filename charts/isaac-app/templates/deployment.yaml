@@ -35,8 +35,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
+          env:
+            - name: SEGUE_CONFIG_LOCATION
+              value: /local/data/conf/segue-config.properties
+            - name: JAVA_OPTIONS
+              value: -Dsegue.version={{ .Values.config.apiVersion}}
+
           livenessProbe:
             httpGet:
               path: /
@@ -47,6 +53,16 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+
+          volumeMounts:
+          - name: isaacConfig
+            mountPath: /local/data/conf
+
+      volumes:
+      - name: isaacConfig
+        secret:
+          secretName: {{ Values.config.secretName }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
