@@ -95,3 +95,101 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "isaac-app.etl.fullname" . }}
+  labels:
+    {{- include "isaac-app.labels" . | nindent 4 }}
+    {{- include "isaac-app.etl.selectorLabels" . | nindent 4 }}
+spec:
+  {{- if not .Values.etl.autoscaling.enabled }}
+  replicas: {{ .Values.etl.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "isaac-app.etl.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.etl.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "isaac-app.etl.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.etl.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "isaac-app.etl.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.etl.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.etl.securityContext | nindent 12 }}
+          image: "{{ .Values.etl.image.repository }}:{{ .Values.etl.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.etl.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: SEGUE_CONFIG_LOCATION
+              value: /local/data/conf/segue-config.properties
+            - name: JAVA_OPTIONS
+              value: -Dsegue.version={{ .Values.etl.config.apiVersion}}
+{{/*reenable*/}}
+{{/*          livenessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /*/}}
+{{/*              port: http*/}}
+{{/*          readinessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /*/}}
+{{/*              port: http*/}}
+          resources:
+            {{- toYaml .Values.etl.resources | nindent 12 }}
+          volumeMounts:
+          - name: isaac-config
+            mountPath: /local/data/conf
+          - name: git-content
+            mountPath: /local/data/git-contentstore
+      initContainers:
+        - name: git-cloner
+          image: alpine/git
+          args:
+            - clone
+            - -c core.sshCommand=ssh -i /local/data/ssh-key/repo-private-key-rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -F /dev/null
+            - {{ .Values.etl.config.contentRepo }}
+            - /local/data/git-contentstore
+          volumeMounts:
+            - name: isaac-ssh-key
+              mountPath: /local/data/ssh-key
+            - name: git-content
+              mountPath: /local/data/git-contentstore
+      volumes:
+      - name: isaac-config
+        secret:
+          secretName: {{ .Values.etl.config.secretName }}
+      - name: isaac-ssh-key
+        secret:
+          defaultMode: 256
+          secretName: {{ .Values.etl.config.sshSecretName }}
+      - name: git-content
+        emptyDir: {}
+
+      {{- with .Values.etl.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.etl.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.etl.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

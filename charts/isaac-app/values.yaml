@@ -162,7 +162,6 @@ etl:
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
     contentRepo: git@github.com:pelotech/rutherford-content.git
-    # JAVA_OPTIONS=-Dlog.path=/isaac-logs -Dsegue.version=$API_VERSION -Djetty.port=8090
 
   serviceAccount:
     # Specifies whether a service account should be created
@@ -189,6 +188,9 @@ etl:
   service:
     type: ClusterIP
     port: 80
+
+  ingress:
+    enabled: false
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
