@@ -170,6 +170,12 @@ spec:
               mountPath: /local/data/ssh-key
             - name: git-content
               mountPath: /local/data/git-contentstore
+        - name: changeowner
+          image: busybox
+          command: [ "sh", "-c", "chown -R 999:999 /content" ]
+          volumeMounts:
+            - name: git-content
+              mountPath: /content
       volumes:
       - name: isaac-config
         secret:
