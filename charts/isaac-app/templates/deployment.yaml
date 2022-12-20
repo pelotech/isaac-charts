@@ -53,15 +53,31 @@ spec:
 {{/*              port: http*/}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-
           volumeMounts:
           - name: isaac-config
             mountPath: /local/data/conf
-
+          - name: git-content
+            mountPath: /local/data/git-contentstore
+      initContainers:
+        - name: git-cloner
+          image: alpine/git
+          args:
+            - clone
+            - -c core.sshCommand=ssh -i /local/data/conf/repo-private-key-rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -F /dev/null
+            - {{ .Values.config.contentRepo }}
+            - /local/data/git-contentstore
+          volumeMounts:
+            - name: isaac-config
+              mountPath: /local/data/conf
+            - name: git-content
+              mountPath: /local/data/git-contentstore
       volumes:
       - name: isaac-config
         secret:
+          defaultMode: 256
           secretName: {{ .Values.config.secretName }}
+      - name: git-content
+        emptyDir: {}
 
       {{- with .Values.nodeSelector }}
       nodeSelector:

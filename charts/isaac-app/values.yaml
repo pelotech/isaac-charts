@@ -68,6 +68,7 @@ fullnameOverride: ""
 config:
   apiVersion: v3.3.2-snapshot
   secretName: isaac-secrets
+  contentRepo: git@github.com:pelotech/rutherford-content.git
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -108,6 +109,8 @@ ingress:
   hosts:
     - host: www.isaac.classis.io
       paths:
+        - path: /isaac-api/*
+          pathType: ImplementationSpecific
         - path: /api/*
           pathType: ImplementationSpecific
   tls: []
