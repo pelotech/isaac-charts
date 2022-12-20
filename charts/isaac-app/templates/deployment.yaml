@@ -4,13 +4,14 @@ metadata:
   name: {{ include "isaac-app.api.fullname" . }}
   labels:
     {{- include "isaac-app.labels" . | nindent 4 }}
+    {{- include "isaac-app.api.selectorLabels" . | nindent 4 }}
 spec:
   {{- if not .Values.api.autoscaling.enabled }}
   replicas: {{ .Values.api.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "isaac-app.selectorLabels" . | nindent 6 }}
+      {{- include "isaac-app.api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.api.podAnnotations }}
@@ -18,7 +19,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "isaac-app.selectorLabels" . | nindent 8 }}
+        {{- include "isaac-app.api.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.api.imagePullSecrets }}
       imagePullSecrets:
