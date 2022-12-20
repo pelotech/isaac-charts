@@ -68,6 +68,7 @@ fullnameOverride: ""
 config:
   apiVersion: v3.3.2-snapshot
   secretName: isaac-secrets
+  sshSecretName: isaac-ssh-key
   contentRepo: git@github.com:pelotech/rutherford-content.git
 
 serviceAccount:

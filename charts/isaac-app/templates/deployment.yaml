@@ -63,19 +63,22 @@ spec:
           image: alpine/git
           args:
             - clone
-            - -c core.sshCommand=ssh -i /local/data/conf/repo-private-key-rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -F /dev/null
+            - -c core.sshCommand=ssh -i /local/data/ssh-key/repo-private-key-rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -F /dev/null
             - {{ .Values.config.contentRepo }}
             - /local/data/git-contentstore
           volumeMounts:
-            - name: isaac-config
-              mountPath: /local/data/conf
+            - name: isaac-ssh-key
+              mountPath: /local/data/ssh-key
             - name: git-content
               mountPath: /local/data/git-contentstore
       volumes:
       - name: isaac-config
         secret:
-          defaultMode: 256
           secretName: {{ .Values.config.secretName }}
+      - name: isaac-ssh-key
+        secret:
+          defaultMode: 256
+          secretName: {{ .Values.config.sshSecretName }}
       - name: git-content
         emptyDir: {}
 
