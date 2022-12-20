@@ -1,38 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "isaac-app.fullname" . }}
+  name: {{ include "isaac-app.api.fullname" . }}
   labels:
     {{- include "isaac-app.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.api.autoscaling.enabled }}
+  replicas: {{ .Values.api.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "isaac-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- with .Values.api.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "isaac-app.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.api.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "isaac-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "isaac-app.api.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.api.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml .Values.api.securityContext | nindent 12 }}
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8080
@@ -41,7 +41,7 @@ spec:
             - name: SEGUE_CONFIG_LOCATION
               value: /local/data/conf/segue-config.properties
             - name: JAVA_OPTIONS
-              value: -Dsegue.version={{ .Values.config.apiVersion}}
+              value: -Dsegue.version={{ .Values.api.config.apiVersion}}
 {{/*reenable*/}}
 {{/*          livenessProbe:*/}}
 {{/*            httpGet:*/}}
@@ -52,7 +52,7 @@ spec:
 {{/*              path: /*/}}
 {{/*              port: http*/}}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.api.resources | nindent 12 }}
           volumeMounts:
           - name: isaac-config
             mountPath: /local/data/conf
@@ -64,7 +64,7 @@ spec:
           args:
             - clone
             - -c core.sshCommand=ssh -i /local/data/ssh-key/repo-private-key-rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -F /dev/null
-            - {{ .Values.config.contentRepo }}
+            - {{ .Values.api.config.contentRepo }}
             - /local/data/git-contentstore
           volumeMounts:
             - name: isaac-ssh-key
@@ -74,23 +74,23 @@ spec:
       volumes:
       - name: isaac-config
         secret:
-          secretName: {{ .Values.config.secretName }}
+          secretName: {{ .Values.api.config.secretName }}
       - name: isaac-ssh-key
         secret:
           defaultMode: 256
-          secretName: {{ .Values.config.sshSecretName }}
+          secretName: {{ .Values.api.config.sshSecretName }}
       - name: git-content
         emptyDir: {}
 
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.api.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.api.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.api.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
