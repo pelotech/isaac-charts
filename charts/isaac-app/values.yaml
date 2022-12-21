@@ -15,16 +15,9 @@ isaac-app-fe:
     http: 80
   ingress:
     enabled: true
-    ingressClassName: alb
-    annotations:
-      alb.ingress.kubernetes.io/load-balancer-name: shared-alb
-      alb.ingress.kubernetes.io/group.name: shared-group
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/target-type: 'ip'
-      alb.ingress.kubernetes.io/ssl-redirect: '443'
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    ingressClassName: nginx
     hostname: www.isaac.classis.io
-    path: "/*"
+    path: "/"
 isaac-app-renderer:
   image:
     registry: ghcr.io
@@ -101,22 +94,15 @@ api:
 
   ingress:
     enabled: enabled
-    className: "alb"
+    className: "nginx"
     annotations:
-      alb.ingress.kubernetes.io/load-balancer-name: shared-alb
-      alb.ingress.kubernetes.io/group.name: shared-group
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/target-type: 'ip'
-      alb.ingress.kubernetes.io/ssl-redirect: '443'
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+      nginx.ingress.kubernetes.io/rewrite-target: /isaac-api/$2
     hosts:
       - host: www.isaac.classis.io
         paths:
-          - path: /isaac-api/*
-            pathType: ImplementationSpecific
-          - path: /api/*
-            pathType: ImplementationSpecific
-    tls: []
+          - path: /api/([^/]+)/(.*)$
+            pathType: Prefix
+#    tls: []
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
