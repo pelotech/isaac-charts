@@ -97,15 +97,16 @@ api:
     className: "nginx"
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: /isaac-api/$2
+      cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
       - host: www.isaac.classis.io
         paths:
           - path: /api/([^/]+)/(.*)$
             pathType: Prefix
-#    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+    tls:
+      - secretName: www-isaac
+        hosts:
+          - www.isaac.classis.io
 
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
