@@ -7,6 +7,6 @@ dependencies:
   version: 13.2.18
 - name: elasticsearch
   repository: https://helm.elastic.co
-  version: 8.5.1
-digest: sha256:5b06cf865c4052301ac001610412cd646d37e71276ff2a901e6d49fb437e9123
-generated: "2022-12-16T17:19:34.170275-05:00"
+  version: 7.17.3
+digest: sha256:f7441c0339582cc2b7329bcf7b905623635d254e74c311a15c28df5b278a6f90
+generated: "2022-12-20T21:34:35.168121-07:00"

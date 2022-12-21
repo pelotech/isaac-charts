@@ -30,7 +30,7 @@ isaac-app-renderer:
 elastic-search:
   protocol: http
   createCert: false
-  imageTag: 8.5.3
+  imageTag: 7.17.6
   esConfig:
     elasticsearch.yml: |
       xpack.security.enabled: false
