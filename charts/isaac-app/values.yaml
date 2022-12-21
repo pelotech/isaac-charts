@@ -52,34 +52,18 @@ elastic-search:
 api:
   name: "api"
   replicaCount: 1
-
   image:
     repository: ghcr.io/pelotech/isaac-api
     tag: latest
     pullPolicy: Always
-
   imagePullSecrets: []
-
   config:
-    apiVersion: v3.3.2-snapshot
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
     contentRepo: git@github.com:pelotech/rutherford-content.git
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
   podAnnotations: {}
-
   podSecurityContext: {}
     # fsGroup: 2000
-
   securityContext: {}
     # capabilities:
     #   drop:
@@ -87,11 +71,9 @@ api:
     # readOnlyRootFilesystem: true
     # runAsNonRoot: true
     # runAsUser: 1000
-
   service:
     type: ClusterIP
     port: 80
-
   ingress:
     enabled: enabled
     className: "nginx"
@@ -107,7 +89,6 @@ api:
       - secretName: www-isaac
         hosts:
           - www.isaac.classis.io
-
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -119,51 +100,25 @@ api:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
   nodeSelector: {}
-
   tolerations: []
-
   affinity: {}
-
 etl:
   name: "etl"
   replicaCount: 1
-
   image:
     repository: ghcr.io/pelotech/isaac-api-etl
     tag: latest
     pullPolicy: Always
-
   imagePullSecrets: []
-
   config:
     apiVersion: v3.3.2-snapshot
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
     contentRepo: git@github.com:pelotech/rutherford-content.git
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
   podAnnotations: {}
-
   podSecurityContext: {}
     # fsGroup: 2000
-
   securityContext: {}
     # capabilities:
     #   drop:
@@ -171,14 +126,11 @@ etl:
     # readOnlyRootFilesystem: true
     # runAsNonRoot: true
     # runAsUser: 1000
-
   service:
     type: ClusterIP
-    port: 80
-
+    port: 5000
   ingress:
     enabled: false
-
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -190,16 +142,76 @@ etl:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
-
   nodeSelector: {}
-
   tolerations: []
-
+  affinity: {}
+eqChecker:
+  name: "equality-checker"
+  replicaCount: 1
+  image:
+    repository: ucamcldtg/equality-checker
+    tag: latest
+    pullPolicy: Always
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+  # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 5000
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+chemChecker:
+  name: "chemistry-checker"
+  replicaCount: 1
+  image:
+    repository: ucamcldtg/chemistry-checker
+    tag: latest
+    pullPolicy: Always
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 5000
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
   affinity: {}
