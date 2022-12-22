@@ -7,7 +7,7 @@ fullnameOverride: ""
 isaac-app-fe:
   image:
     registry: ghcr.io
-    repository: pelotech/isaac-react-app-cs
+    repository: isaaccomputerscience/isaac-react-app-cs
     tag: latest
   service:
     type: ClusterIP
@@ -21,7 +21,7 @@ isaac-app-fe:
 isaac-app-renderer:
   image:
     registry: ghcr.io
-    repository: pelotech/isaac-react-app-cs-renderer
+    repository: isaaccomputerscience/isaac-react-app-cs-renderer
     tag: latest
   service:
     type: ClusterIP
@@ -53,7 +53,7 @@ api:
   name: "api"
   replicaCount: 1
   image:
-    repository: ghcr.io/pelotech/isaac-api
+    repository: ghcr.io/isaaccomputerscience/isaac-api
     tag: latest
     pullPolicy: Always
   imagePullSecrets: []
@@ -107,7 +107,7 @@ etl:
   name: "etl"
   replicaCount: 1
   image:
-    repository: ghcr.io/pelotech/isaac-api-etl
+    repository: ghcr.io/isaaccomputerscience/isaac-api-etl
     tag: latest
     pullPolicy: Always
   imagePullSecrets: []
