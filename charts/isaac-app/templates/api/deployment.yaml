@@ -15,6 +15,7 @@ spec:
       {{- if .Values.api.prometheusExport.enabled }}
       annotations:
         prometheus.io/port: {{ .Values.api.prometheusExport.port }}
+        prometheus.io/path: {{ .Values.api.prometheusExport.path }}
         prometheus.io/scrape: true
       {{- end }}
       labels:

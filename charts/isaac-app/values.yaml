@@ -63,6 +63,7 @@ api:
     contentRepo: git@github.com:pelotech/rutherford-content.git
   prometheusExport:
     enabled: true
+    path: /
     port: 9966
   podSecurityContext: {}
     # fsGroup: 2000
@@ -120,6 +121,7 @@ etl:
     contentRepo: git@github.com:pelotech/rutherford-content.git
   prometheusExport:
     enabled: true
+    path: /
     port: 9966
   podSecurityContext: {}
     # fsGroup: 2000
