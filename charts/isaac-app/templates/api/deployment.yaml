@@ -12,9 +12,10 @@ spec:
       {{- include "isaac-app.api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.api.podAnnotations }}
+      {{- if .Values.api.prometheusExport.enabled }}
       annotations:
-        {{- toYaml . | nindent 8 }}
+        prometheus.io/port: {{ .Values.api.prometheusExport.port }}
+        prometheus.io/scrape: true
       {{- end }}
       labels:
         {{- include "isaac-app.api.selectorLabels" . | nindent 8 }}
@@ -35,6 +36,11 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            {{- if .Values.api.prometheusExport.enabled }}
+            - name: prometheusExport
+              containerPort: {{ .Values.api.prometheusExport.port }}
+              protocol: TCP
+            {{- end }}
           env:
             - name: SEGUE_CONFIG_LOCATION
               value: /local/data/conf/segue-config.properties

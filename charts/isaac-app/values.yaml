@@ -61,7 +61,9 @@ api:
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
     contentRepo: git@github.com:pelotech/rutherford-content.git
-  podAnnotations: {}
+  prometheusExport:
+    enabled: true
+    port: 9966
   podSecurityContext: {}
     # fsGroup: 2000
   securityContext: {}
@@ -116,7 +118,9 @@ etl:
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
     contentRepo: git@github.com:pelotech/rutherford-content.git
-  podAnnotations: {}
+  prometheusExport:
+    enabled: true
+    port: 9966
   podSecurityContext: {}
     # fsGroup: 2000
   securityContext: {}
