@@ -33,7 +33,7 @@ spec:
           imagePullPolicy: {{ .Values.contentEditor.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 5000
+              containerPort: 80
               protocol: TCP
 {{/*reenable*/}}
 {{/*          livenessProbe:*/}}
