@@ -117,6 +117,16 @@ app.kubernetes.io/name: {{ .Values.chemChecker.name }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{- define "isaac-app.codeEditor.selectorLabels" -}}
+app.kubernetes.io/name: {{ .Values.codeEditor.name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "isaac-app.contentEditor.selectorLabels" -}}
+app.kubernetes.io/name: {{ .Values.contentEditor.name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
 {{/*
 Service Acct Names
 */}}
