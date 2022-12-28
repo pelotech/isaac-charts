@@ -18,6 +18,22 @@ isaac-app-fe:
     ingressClassName: nginx
     hostname: www.isaac.classis.io
     path: "/"
+
+isaac-cdn:
+  image:
+    registry: ghcr.io
+    repository: isaaccomputerscience/isaac-cdn
+    tag: latest
+  service:
+    type: ClusterIP
+  containerPorts:
+    http: 80
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: cdn.isaac.classis.io
+    path: "/"
+
 isaac-app-renderer:
   image:
     registry: ghcr.io
@@ -27,6 +43,7 @@ isaac-app-renderer:
     type: ClusterIP
   containerPorts:
     http: 80
+
 elastic-search:
   protocol: http
   createCert: false
@@ -110,6 +127,7 @@ api:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
 etl:
   name: "etl"
   replicaCount: 1
@@ -151,6 +169,7 @@ etl:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
 eqChecker:
   name: "equality-checker"
   replicaCount: 1
@@ -186,6 +205,7 @@ eqChecker:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
 chemChecker:
   name: "chemistry-checker"
   replicaCount: 1
@@ -223,6 +243,7 @@ chemChecker:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
 codeEditor:
   name: "code-editor"
   replicaCount: 1
@@ -272,6 +293,7 @@ codeEditor:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
 contentEditor:
   name: "content-editor"
   replicaCount: 1
