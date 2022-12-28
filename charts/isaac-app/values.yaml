@@ -35,12 +35,16 @@ elastic-search:
     elasticsearch.yml: |
       xpack.security.enabled: false
       xpack.security.transport.ssl.enabled: false
-  clusterName: isaac
+  clusterName: isaac-cs-content
   persistence:
     enabled: false
   replicas: 1
-  secret:
-    password: "testing123"
+  extraEnvs:
+    - name: ELASTIC_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: isaac-secrets
+          key: elasticsearch-pw
   resources: # bad needs fixed but temp on current hardware
     requests:
       cpu: "100m"
