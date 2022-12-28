@@ -241,7 +241,19 @@ codeEditor:
     type: ClusterIP
     port: 80
   ingress:
-    enabled: false
+    enabled: enabled
+    className: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: editor.isaac.classis.io
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: editor-isaac
+        hosts:
+          - editor.isaac.classis.io
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -277,6 +289,8 @@ contentEditor:
   service:
     type: ClusterIP
     port: 80
+  ingress:
+    enabled: false
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
