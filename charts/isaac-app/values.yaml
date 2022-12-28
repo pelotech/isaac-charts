@@ -207,6 +207,8 @@ chemChecker:
   service:
     type: ClusterIP
     port: 5000
+  ingress:
+    enabled: false
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -216,6 +218,92 @@ chemChecker:
     #   cpu: 100m
     #   memory: 128Mi
     # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+codeEditor:
+  name: "code-editor"
+  replicaCount: 1
+  image:
+    repository: ghcr.io/isaaccomputerscience/isaac-code-editor
+    tag: latest
+    pullPolicy: Always
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: enabled
+    className: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: editor.isaac.classis.io
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: editor-isaac
+        hosts:
+          - editor.isaac.classis.io
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+contentEditor:
+  name: "content-editor"
+  replicaCount: 1
+  image:
+    repository: ghcr.io/isaaccomputerscience/isaac-content-editor
+    tag: latest
+    pullPolicy: Always
+  imagePullSecrets: []
+  podAnnotations: {}
+  podSecurityContext: {}
+  # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: false
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+  # requests:
   #   cpu: 100m
   #   memory: 128Mi
   nodeSelector: {}
