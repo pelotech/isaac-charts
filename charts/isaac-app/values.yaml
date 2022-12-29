@@ -33,6 +33,12 @@ isaac-cdn:
     ingressClassName: nginx
     hostname: cdn.isaac.classis.io
     path: "/"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    extraTls:
+      - hosts:
+          - cdn.isaac.classis.io
+        secretName: cdn-isaac
 
 isaac-app-renderer:
   image:
