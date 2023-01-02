@@ -26,11 +26,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
-        {{- toYaml .Values.api.podSecurityContext | nindent 8 }}
+        runAsUser: 999
+        fsGroup: 999
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.api.securityContext | nindent 12 }}
           image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.api.image.pullPolicy }}
           ports:
@@ -65,27 +64,48 @@ spec:
             - name: isaac-config
               mountPath: /local/data/conf
             - name: git-content
-              mountPath: /local/data/git-contentstore
-      initContainers:
-        - name: git-cloner
-          image: alpine/git
+              mountPath: /local/data/git
+        - name: git-sync
+          image: registry.k8s.io/git-sync/git-sync:v3.6.2
           args:
-            - clone
-            - -c core.sshCommand=ssh -i /local/data/ssh-key/repo-private-key-rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -F /dev/null
-            - {{ .Values.api.config.contentRepo }}
-            - /local/data/git-contentstore
+            - --repo={{ .Values.api.config.contentRepo }}
+            - --root=/local/data/git
+            - --depth={{ .Values.api.config.contentRepoDepth }}
+            - --wait={{ .Values.api.config.contentRepoWait }}
+            - --ssh
+            - --ssh-key-file=/local/data/ssh-key/repo-private-key-rsa
+            - --ssh-known-hosts=false
+            - --add-user
           volumeMounts:
             - name: isaac-ssh-key
               mountPath: /local/data/ssh-key
             - name: git-content
-              mountPath: /local/data/git-contentstore
+              mountPath: /local/data/git
+      initContainers:
+        - name: git-sync-init
+          image: registry.k8s.io/git-sync/git-sync:v3.6.2
+          args:
+            - --one-time
+            - --repo={{ .Values.api.config.contentRepo }}
+            - --root=/local/data/git
+            - --depth={{ .Values.api.config.contentRepoDepth }}
+            - --wait={{ .Values.api.config.contentRepoWait }}
+            - --ssh
+            - --ssh-key-file=/local/data/ssh-key/repo-private-key-rsa
+            - --ssh-known-hosts=false
+            - --add-user
+          volumeMounts:
+            - name: isaac-ssh-key
+              mountPath: /local/data/ssh-key
+            - name: git-content
+              mountPath: /local/data/git
       volumes:
         - name: isaac-config
           secret:
             secretName: {{ .Values.api.config.secretName }}
         - name: isaac-ssh-key
           secret:
-            defaultMode: 256
+            defaultMode: 0400
             secretName: {{ .Values.api.config.sshSecretName }}
         - name: git-content
           emptyDir: {}

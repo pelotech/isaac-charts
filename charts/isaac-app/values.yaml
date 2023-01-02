@@ -88,19 +88,12 @@ api:
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
     contentRepo: git@github.com:pelotech/rutherford-content.git
+    contentRepoDepth: 1
+    contentRepoWait: 60
   prometheusExport:
     enabled: true
     path: /
     port: 9966
-  podSecurityContext: {}
-    # fsGroup: 2000
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
   service:
     type: ClusterIP
     port: 80
@@ -147,15 +140,8 @@ etl:
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
     contentRepo: git@github.com:pelotech/rutherford-content.git
-  podSecurityContext: {}
-    # fsGroup: 2000
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
+    contentRepoDepth: 1
+    contentRepoWait: 60
   service:
     type: ClusterIP
     port: 5000
