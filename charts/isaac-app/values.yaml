@@ -87,7 +87,7 @@ api:
   config:
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
-    contentRepo: git@github.com:pelotech/rutherford-content.git
+    contentRepo: git@github.com:isaaccomputerscience/rutherford-content.git
     contentRepoDepth: 1
     contentRepoWait: 60
   prometheusExport:
@@ -139,7 +139,7 @@ etl:
     apiVersion: v3.3.2-snapshot
     secretName: isaac-secrets
     sshSecretName: isaac-ssh-key
-    contentRepo: git@github.com:pelotech/rutherford-content.git
+    contentRepo: git@github.com:isaaccomputerscience/rutherford-content.git
     contentRepoDepth: 1
     contentRepoWait: 60
   service:

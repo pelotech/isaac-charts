@@ -63,6 +63,8 @@ spec:
           volumeMounts:
             - name: isaac-config
               mountPath: /local/data/conf
+            - name: isaac-ssh-key
+              mountPath: /local/data/ssh-key
             - name: git-content
               mountPath: /local/data/git
         - name: git-sync
