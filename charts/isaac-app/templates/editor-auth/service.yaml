@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "isaac-app.editorAuth.fullname" . }}
+  labels:
+    {{- include "isaac-app.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.editorAuth.service.type }}
+  ports:
+    - port: {{ .Values.editorAuth.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "isaac-app.editorAuth.selectorLabels" . | nindent 4 }}
