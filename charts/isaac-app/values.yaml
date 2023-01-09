@@ -49,6 +49,77 @@ isaac-app-renderer:
     type: ClusterIP
   containerPorts:
     http: 80
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: editor-preview.isaac.classis.io
+    path: "/"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    extraTls:
+      - hosts:
+          - editor-preview.isaac.classis.io
+        secretName: editor-preview-isaac
+
+
+# TODO set staging API url?
+isaac-content-editor:
+  image:
+    registry: ghcr.io
+    repository: isaaccomputerscience/isaac-content-editor
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+  containerPorts:
+    http: 80
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: content-editor.isaac.classis.io
+    path: "/"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    extraTls:
+      - hosts:
+          - content-editor.isaac.classis.io
+        secretName: content-editor-isaac
+  extraEnvVars:
+    - name: REACT_APP_SITE
+      value: CS
+    - name: REACT_APP_CLIENT_ID
+      value: f1540415e26cc2a5765a
+    - name: REACT_APP_AUTH_URL
+      value: https://editor-auth.isaac.classis.io/access_token
+    - name: REACT_APP_CONTENT_REPO
+      value: isaac-content-2
+    - name: REACT_APP_PREVIEW_HOST
+      value: https://editor-preview.isaac.classis.io
+    - name: REACT_APP_API_STAGING_HOST
+      value: https://www.isaac.classis.io
+    - name: REACT_APP_API_HOST
+      value: https://www.isaac.classis.io
+
+isaac-code-editor:
+  image:
+    registry: ghcr.io
+    repository: isaaccomputerscience/isaac-code-editor
+    tag: latest
+  service:
+    type: ClusterIP
+  containerPorts:
+    http: 80
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: code-editor.isaac.classis.io
+    path: "/"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    extraTls:
+      - hosts:
+          - code-editor.isaac.classis.io
+        secretName: code-editor-isaac
 
 elastic-search:
   protocol: http
@@ -144,7 +215,7 @@ etl:
     contentRepoWait: 60
   service:
     type: ClusterIP
-    port: 5000
+    port: 80
   ingress:
     enabled: false
   resources: {}
@@ -182,7 +253,7 @@ eqChecker:
   # runAsUser: 1000
   service:
     type: ClusterIP
-    port: 5000
+    port: 80
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -218,7 +289,7 @@ chemChecker:
   # runAsUser: 1000
   service:
     type: ClusterIP
-    port: 5000
+    port: 80
   ingress:
     enabled: false
   resources: {}
@@ -236,24 +307,17 @@ chemChecker:
   tolerations: []
   affinity: {}
 
-codeEditor:
-  name: "code-editor"
+editorAuth:
+  name: "editor-auth"
   replicaCount: 1
   image:
-    repository: ghcr.io/isaaccomputerscience/isaac-code-editor
+    repository: ghcr.io/isaaccomputerscience/isaac-editor-auth
     tag: latest
     pullPolicy: Always
   imagePullSecrets: []
-  podAnnotations: {}
-  podSecurityContext: {}
-  # fsGroup: 2000
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  config:
+    allowOriginHeader: https://content-editor.isaac.classis.io
+    secretName: isaac-editor-auth-secrets
   service:
     type: ClusterIP
     port: 80
@@ -263,14 +327,14 @@ codeEditor:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - host: code-editor.isaac.classis.io
+      - host: editor-auth.isaac.classis.io
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: code-editor-isaac
+      - secretName: editor-auth-isaac
         hosts:
-          - code-editor.isaac.classis.io
+          - editor-auth.isaac.classis.io
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -279,59 +343,9 @@ codeEditor:
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-
-contentEditor:
-  name: "content-editor"
-  replicaCount: 1
-  image:
-    repository: ghcr.io/isaaccomputerscience/isaac-content-editor
-    tag: latest
-    pullPolicy: Always
-  imagePullSecrets: []
-  podAnnotations: {}
-  podSecurityContext: {}
-  # fsGroup: 2000
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-  service:
-    type: ClusterIP
-    port: 80
-  ingress:
-    enabled: enabled
-    className: "nginx"
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-    hosts:
-      - host: content-editor.isaac.classis.io
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - secretName: content-editor-isaac
-        hosts:
-          - content-editor.isaac.classis.io
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
+    # requests:
     #   cpu: 100m
     #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}

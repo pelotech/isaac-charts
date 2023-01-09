@@ -1,9 +1,9 @@
-{{- if .Values.contentEditor.ingress.enabled -}}
-{{- $fullName := include "isaac-app.contentEditor.fullname" . -}}
-{{- $svcPort := .Values.contentEditor.service.port -}}
-{{- if and .Values.contentEditor.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.contentEditor.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.contentEditor.ingress.annotations "kubernetes.io/ingress.class" .Values.contentEditor.ingress.className}}
+{{- if .Values.editorAuth.ingress.enabled -}}
+{{- $fullName := include "isaac-app.editorAuth.fullname" . -}}
+{{- $svcPort := .Values.editorAuth.service.port -}}
+{{- if and .Values.editorAuth.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.editorAuth.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.editorAuth.ingress.annotations "kubernetes.io/ingress.class" .Values.editorAuth.ingress.className}}
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -18,17 +18,17 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "isaac-app.labels" . | nindent 4 }}
-  {{- with .Values.contentEditor.ingress.annotations }}
+  {{- with .Values.editorAuth.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.contentEditor.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.contentEditor.ingress.className }}
+  {{- if and .Values.editorAuth.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.editorAuth.ingress.className }}
   {{- end }}
-  {{- if .Values.contentEditor.ingress.tls }}
+  {{- if .Values.editorAuth.ingress.tls }}
   tls:
-    {{- range .Values.contentEditor.ingress.tls }}
+    {{- range .Values.editorAuth.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -37,7 +37,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.contentEditor.ingress.hosts }}
+    {{- range .Values.editorAuth.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:

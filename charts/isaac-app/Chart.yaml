@@ -36,6 +36,14 @@ dependencies:
     name: nginx
     version: "13.2.18"
     repository: https://charts.bitnami.com/bitnami
+  - alias: isaac-content-editor
+    name: nginx
+    version: "13.2.18"
+    repository: https://charts.bitnami.com/bitnami
+  - alias: isaac-code-editor
+    name: nginx
+    version: "13.2.18"
+    repository: https://charts.bitnami.com/bitnami
   - alias: elastic-search
     name: elasticsearch
     version: "7.17.3"
