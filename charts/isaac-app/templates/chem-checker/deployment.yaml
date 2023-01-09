@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "isaac-app.chemChecker.fullname" . }}
+  labels:
+    {{- include "isaac-app.labels" . | nindent 4 }}
+      {{- include "isaac-app.chemChecker.selectorLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.chemChecker.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "isaac-app.chemChecker.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.chemChecker.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "isaac-app.chemChecker.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.chemChecker.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.chemChecker.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.chemChecker.securityContext | nindent 12 }}
+          image: "{{ .Values.chemChecker.image.repository }}:{{ .Values.chemChecker.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.chemChecker.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.chemChecker.resources | nindent 12 }}
+
+      {{- with .Values.chemChecker.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.chemChecker.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.chemChecker.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

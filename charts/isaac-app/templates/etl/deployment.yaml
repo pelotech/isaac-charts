@@ -33,15 +33,14 @@ spec:
           env:
             - name: SEGUE_CONFIG_LOCATION
               value: /local/data/conf/segue-config.properties
-{{/*reenable*/}}
-{{/*          livenessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /*/}}
-{{/*              port: http*/}}
-{{/*          readinessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /*/}}
-{{/*              port: http*/}}
+          livenessProbe:
+            httpGet:
+              path: /isaac-api/api/etl/ping
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /isaac-api/api/etl/ping
+              port:  http
           resources:
             {{- toYaml .Values.etl.resources | nindent 12 }}
           volumeMounts:
