@@ -41,6 +41,12 @@ spec:
             httpGet:
               path: /isaac-api/api/etl/ping
               port:  http
+          startupProbe:
+            httpGet:
+              path: /isaac-api/api/etl/ping
+              port:  http
+            periodSeconds: 10
+            failureThreshold: 15
           resources:
             {{- toYaml .Values.etl.resources | nindent 12 }}
           volumeMounts:
