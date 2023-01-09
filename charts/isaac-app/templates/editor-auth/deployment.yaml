@@ -35,6 +35,14 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.editorAuth.config.secretName }}
                   key: EDITOR_AUTH_CLIENT_SECRET
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
           resources:
             {{- toYaml .Values.editorAuth.resources | nindent 12 }}
       {{- with .Values.editorAuth.nodeSelector }}
