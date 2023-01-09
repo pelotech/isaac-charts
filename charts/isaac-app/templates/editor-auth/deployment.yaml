@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "isaac-app.editorAuth.fullname" . }}
+  labels:
+    {{- include "isaac-app.labels" . | nindent 4 }}
+    {{- include "isaac-app.editorAuth.selectorLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.editorAuth.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "isaac-app.editorAuth.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "isaac-app.editorAuth.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.editorAuth.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.editorAuth.image.repository }}:{{ .Values.editorAuth.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.editorAuth.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: EDITOR_AUTH_ALLOW_ORIGIN
+              value: {{ .Values.editorAuth.config.allowOriginHeader }}
+            - name: EDITOR_AUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.editorAuth.config.secretName }}
+                  key: EDITOR_AUTH_CLIENT_SECRET
+          resources:
+            {{- toYaml .Values.editorAuth.resources | nindent 12 }}
+      {{- with .Values.editorAuth.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.editorAuth.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.editorAuth.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

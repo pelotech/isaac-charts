@@ -68,6 +68,7 @@ isaac-content-editor:
     registry: ghcr.io
     repository: isaaccomputerscience/isaac-content-editor
     tag: latest
+    pullPolicy: Always
   service:
     type: ClusterIP
   containerPorts:
@@ -84,14 +85,12 @@ isaac-content-editor:
           - content-editor.isaac.classis.io
         secretName: content-editor-isaac
   extraEnvVars:
-    - name: NODE_ENV
-      value: production
     - name: REACT_APP_SITE
       value: CS
     - name: REACT_APP_CLIENT_ID
-      value: f929345390ca5ca6e1ba
-    - name: REACT_APP_AUTH_CODE
-      value: WD4uGrm2iTFxmvwHjybnCSzIpgFk3r//7twVti62RpnQWyFteaKK11q6wLBQX6bb/yy9NY9t0m79MxokXUVZpRNzczPvBAkW6WGfmdCUa5tNs3UMswWmpITiv/                   TiGHJKxDRZ9m2KYgly3jqLzEU1EY7KznCCa16x7MLzdcQzyYKYS49RB3V/+B7IsuyDPQLRVffRTe/2MkrZmx98kj9x14eMgteIRQ7aYhi1pDsYE1dVGOMyojgoPsf6
+      value: f1540415e26cc2a5765a
+    - name: REACT_APP_AUTH_URL
+      value: https://editor-auth.isaac.classis.io/access_token
     - name: REACT_APP_CONTENT_REPO
       value: isaac-content-2
     - name: REACT_APP_PREVIEW_HOST
@@ -304,6 +303,49 @@ chemChecker:
     # requests:
   #   cpu: 100m
   #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+editorAuth:
+  name: "editor-auth"
+  replicaCount: 1
+  image:
+    repository: ghcr.io/isaaccomputerscience/isaac-editor-auth
+    tag: latest
+    pullPolicy: Always
+  imagePullSecrets: []
+  config:
+    allowOriginHeader: https://content-editor.isaac.classis.io
+    secretName: isaac-editor-auth-secrets
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: enabled
+    className: "nginx"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: editor-auth.isaac.classis.io
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: editor-auth-isaac
+        hosts:
+          - editor-auth.isaac.classis.io
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
