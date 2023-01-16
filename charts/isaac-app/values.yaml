@@ -18,6 +18,14 @@ isaac-app-fe:
     ingressClassName: nginx
     hostname: www.isaac.classis.io
     path: "/"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      # NOTE: Using configuration-snippet in a multitenant cluster has security risks, see https://github.com/kubernetes/ingress-nginx/issues/7837
+      # Since we are installing this in a non multitenant cluster and we assume all invididuals with access to the ArgoCD repo are admins, we
+      # decided this CVE does not present a security risk. A more secure workaround is in development and should be migrated to once it is
+      # completed: https://github.com/kubernetes/ingress-nginx/issues/7811
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        more_set_headers "Content-Security-Policy: default-src 'self' wss://www.isaac.classis.io https://cdn.isaac.classis.io https://www.google-analytics.com https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.isaac.classis.io  https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://www.google-analytics.com https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.www.isaac.classis.io https://fonts.gstatic.com;";
 
 isaac-cdn:
   image:
@@ -56,6 +64,12 @@ isaac-app-renderer:
     path: "/"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
+      # NOTE: Using configuration-snippet in a multitenant cluster has security risks, see https://github.com/kubernetes/ingress-nginx/issues/7837
+      # Since we are installing this in a non multitenant cluster and we assume all invididuals with access to the ArgoCD repo are admins, we
+      # decided this CVE does not present a security risk. A more secure workaround is in development and should be migrated to once it is
+      # completed: https://github.com/kubernetes/ingress-nginx/issues/7811
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        more_set_headers "default-src 'self' https://cdn.isaac.classis.io https://staging.isaac.classis.io https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.isaac.classis.io https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://staging.isaac.classis.io https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.isaac.classis.io https://fonts.gstatic.com; frame-ancestors 'self' https://content-editor.isaac.classis.io;";
     extraTls:
       - hosts:
           - editor-preview.isaac.classis.io
@@ -80,6 +94,12 @@ isaac-content-editor:
     path: "/"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
+      # NOTE: Using configuration-snippet in a multitenant cluster has security risks, see https://github.com/kubernetes/ingress-nginx/issues/7837
+      # Since we are installing this in a non multitenant cluster and we assume all invididuals with access to the ArgoCD repo are admins, we
+      # decided this CVE does not present a security risk. A more secure workaround is in development and should be migrated to once it is
+      # completed: https://github.com/kubernetes/ingress-nginx/issues/7811
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        more_set_headers "default-src 'self' https://cdn.isaac.classis.io https://staging.isaac.classis.io https://www.youtube-nocookie.com https://www.youtube.com https://api.github.com https://editor-auth.isaac.classis.io object-src 'none'; frame-src 'self' https://editor-preview.isaac.classis.io https://content-editor.isaac.classis.io https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.isaac.classis.io https://fonts.gstatic.com;";
     extraTls:
       - hosts:
           - content-editor.isaac.classis.io
