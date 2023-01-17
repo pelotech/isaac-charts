@@ -350,7 +350,7 @@ editorAuth:
     port: 80
   deployment:
     annotations:
-      secret.reloader.stakater.com/reload: "isaac-editor-auth-secrets,editor-auth-isaac"
+      secret.reloader.stakater.com/reload: "isaac-editor-auth-secrets"
   ingress:
     enabled: enabled
     className: "nginx"
