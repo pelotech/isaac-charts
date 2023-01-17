@@ -8,8 +8,14 @@ dependencies:
 - name: nginx
   repository: https://charts.bitnami.com/bitnami
   version: 13.2.18
+- name: nginx
+  repository: https://charts.bitnami.com/bitnami
+  version: 13.2.18
+- name: nginx
+  repository: https://charts.bitnami.com/bitnami
+  version: 13.2.18
 - name: elasticsearch
   repository: https://helm.elastic.co
   version: 7.17.3
-digest: sha256:31d042a116e45e5220d62c4d4f5216dce08f7e2958a7385b57351b614b601d4e
-generated: "2023-01-02T16:45:25.622273-08:00"
+digest: sha256:1a8295fd61f1d563224c815651f7867576f8fb343b77b7549dd538578a5162c8
+generated: "2023-01-17T16:23:08.755245-05:00"
