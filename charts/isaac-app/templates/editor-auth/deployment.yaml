@@ -5,6 +5,10 @@ metadata:
   labels:
     {{- include "isaac-app.labels" . | nindent 4 }}
     {{- include "isaac-app.editorAuth.selectorLabels" . | nindent 4 }}
+  {{- with .Values.editorAuth.deployment.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.editorAuth.replicaCount }}
   selector:

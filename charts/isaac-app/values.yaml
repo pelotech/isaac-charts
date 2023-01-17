@@ -188,6 +188,9 @@ api:
   service:
     type: ClusterIP
     port: 80
+  deployment:
+    annotations:
+      secret.reloader.stakater.com/reload: "isaac-secrets,isaac-ssh-key"
   ingress:
     enabled: enabled
     className: "nginx"
@@ -236,6 +239,9 @@ etl:
   service:
     type: ClusterIP
     port: 80
+  deployment:
+    annotations:
+      secret.reloader.stakater.com/reload: "isaac-secrets,isaac-ssh-key"
   ingress:
     enabled: false
   resources: {}
@@ -341,6 +347,9 @@ editorAuth:
   service:
     type: ClusterIP
     port: 80
+  deployment:
+    annotations:
+      secret.reloader.stakater.com/reload: "isaac-editor-auth-secrets"
   ingress:
     enabled: enabled
     className: "nginx"
