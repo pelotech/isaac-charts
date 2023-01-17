@@ -141,7 +141,6 @@ isaac-code-editor:
           - code-editor.isaac.classis.io
         secretName: code-editor-isaac
 
-#TODO need to add reloader for isaac-secrets
 elastic-search:
   protocol: http
   createCert: false
