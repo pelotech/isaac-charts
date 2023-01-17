@@ -69,14 +69,12 @@ isaac-app-renderer:
       # decided this CVE does not present a security risk. A more secure workaround is in development and should be migrated to once it is
       # completed: https://github.com/kubernetes/ingress-nginx/issues/7811
       nginx.ingress.kubernetes.io/configuration-snippet: |
-        more_set_headers "default-src 'self' https://cdn.isaac.classis.io https://staging.isaac.classis.io https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.isaac.classis.io https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://staging.isaac.classis.io https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.isaac.classis.io https://fonts.gstatic.com; frame-ancestors 'self' https://content-editor.isaac.classis.io;";
+        more_set_headers "default-src 'self' https://cdn.isaac.classis.io https://www.staging.isaac.classis.io https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.isaac.classis.io https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://www.staging.isaac.classis.io https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.isaac.classis.io https://fonts.gstatic.com; frame-ancestors 'self' https://content-editor.isaac.classis.io;";
     extraTls:
       - hosts:
           - editor-preview.isaac.classis.io
         secretName: editor-preview-isaac
 
-
-# TODO set staging API url?
 isaac-content-editor:
   image:
     registry: ghcr.io
@@ -118,7 +116,7 @@ isaac-content-editor:
     - name: REACT_APP_PREVIEW_HOST
       value: https://editor-preview.isaac.classis.io
     - name: REACT_APP_API_STAGING_HOST
-      value: https://www.isaac.classis.io
+      value: https://www.staging.isaac.classis.io
     - name: REACT_APP_API_HOST
       value: https://www.isaac.classis.io
 
