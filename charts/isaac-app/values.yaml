@@ -141,6 +141,7 @@ isaac-code-editor:
           - code-editor.isaac.classis.io
         secretName: code-editor-isaac
 
+#TODO need to add reloader for isaac-secrets
 elastic-search:
   protocol: http
   createCert: false
@@ -188,6 +189,9 @@ api:
   service:
     type: ClusterIP
     port: 80
+  deployment:
+    annotations:
+      secret.reloader.stakater.com/reload: "isaac-secrets,isaac-ssh-key"
   ingress:
     enabled: enabled
     className: "nginx"
@@ -236,6 +240,9 @@ etl:
   service:
     type: ClusterIP
     port: 80
+  deployment:
+    annotations:
+      secret.reloader.stakater.com/reload: "isaac-secrets,isaac-ssh-key"
   ingress:
     enabled: false
   resources: {}
@@ -341,6 +348,9 @@ editorAuth:
   service:
     type: ClusterIP
     port: 80
+  deployment:
+    annotations:
+      secret.reloader.stakater.com/reload: "isaac-editor-auth-secrets,editor-auth-isaac"
   ingress:
     enabled: enabled
     className: "nginx"
