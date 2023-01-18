@@ -195,8 +195,9 @@ api:
     enabled: enabled
     className: "nginx"
     annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /isaac-api/$2
       cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/rewrite-target: /isaac-api/$2
+      nginx.ingress.kubernetes.io/proxy-cookie-path: /isaac-api /
     hosts:
       - host: www.non-prod.isaaccomputerscience.org
         paths:
