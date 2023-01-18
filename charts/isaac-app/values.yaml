@@ -16,7 +16,7 @@ isaac-app-fe:
   ingress:
     enabled: true
     ingressClassName: nginx
-    hostname: www.isaac.classis.io
+    hostname: www.non-prod.isaaccomputerscience.org
     path: "/"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -25,7 +25,7 @@ isaac-app-fe:
       # decided this CVE does not present a security risk. A more secure workaround is in development and should be migrated to once it is
       # completed: https://github.com/kubernetes/ingress-nginx/issues/7811
       nginx.ingress.kubernetes.io/configuration-snippet: |
-        more_set_headers "Content-Security-Policy: default-src 'self' wss://www.isaac.classis.io https://cdn.isaac.classis.io https://www.google-analytics.com https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.isaac.classis.io  https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://www.google-analytics.com https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.www.isaac.classis.io https://fonts.gstatic.com;";
+        more_set_headers "Content-Security-Policy: default-src 'self' wss://www.non-prod.isaaccomputerscience.org https://cdn.non-prod.isaaccomputerscience.org https://www.google-analytics.com https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.non-prod.isaaccomputerscience.org  https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.non-prod.isaaccomputerscience.org https://www.google-analytics.com https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.www.non-prod.isaaccomputerscience.org https://fonts.gstatic.com;";
 
 isaac-cdn:
   image:
@@ -39,13 +39,13 @@ isaac-cdn:
   ingress:
     enabled: true
     ingressClassName: nginx
-    hostname: cdn.isaac.classis.io
+    hostname: cdn.non-prod.isaaccomputerscience.org
     path: "/"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     extraTls:
       - hosts:
-          - cdn.isaac.classis.io
+          - cdn.non-prod.isaaccomputerscience.org
         secretName: cdn-isaac
 
 isaac-app-renderer:
@@ -60,7 +60,7 @@ isaac-app-renderer:
   ingress:
     enabled: true
     ingressClassName: nginx
-    hostname: editor-preview.isaac.classis.io
+    hostname: editor-preview.non-prod.isaaccomputerscience.org
     path: "/"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -69,10 +69,10 @@ isaac-app-renderer:
       # decided this CVE does not present a security risk. A more secure workaround is in development and should be migrated to once it is
       # completed: https://github.com/kubernetes/ingress-nginx/issues/7811
       nginx.ingress.kubernetes.io/configuration-snippet: |
-        more_set_headers "default-src 'self' https://cdn.isaac.classis.io https://www.staging.isaac.classis.io https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.isaac.classis.io https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://www.staging.isaac.classis.io https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.isaac.classis.io https://fonts.gstatic.com; frame-ancestors 'self' https://content-editor.isaac.classis.io;";
+        more_set_headers "default-src 'self' https://cdn.non-prod.isaaccomputerscience.org https://www.staging.non-prod.isaaccomputerscience.org https://www.youtube-nocookie.com https://www.youtube.com; object-src 'none'; frame-src 'self' https://content-editor.non-prod.isaaccomputerscience.org https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.non-prod.isaaccomputerscience.org https://www.staging.non-prod.isaaccomputerscience.org https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.non-prod.isaaccomputerscience.org https://fonts.gstatic.com; frame-ancestors 'self' https://content-editor.non-prod.isaaccomputerscience.org;";
     extraTls:
       - hosts:
-          - editor-preview.isaac.classis.io
+          - editor-preview.non-prod.isaaccomputerscience.org
         secretName: editor-preview-isaac
 
 isaac-content-editor:
@@ -88,7 +88,7 @@ isaac-content-editor:
   ingress:
     enabled: true
     ingressClassName: nginx
-    hostname: content-editor.isaac.classis.io
+    hostname: content-editor.non-prod.isaaccomputerscience.org
     path: "/"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -97,10 +97,10 @@ isaac-content-editor:
       # decided this CVE does not present a security risk. A more secure workaround is in development and should be migrated to once it is
       # completed: https://github.com/kubernetes/ingress-nginx/issues/7811
       nginx.ingress.kubernetes.io/configuration-snippet: |
-        more_set_headers "default-src 'self' https://cdn.isaac.classis.io https://staging.isaac.classis.io https://www.youtube-nocookie.com https://www.youtube.com https://api.github.com https://editor-auth.isaac.classis.io object-src 'none'; frame-src 'self' https://editor-preview.isaac.classis.io https://content-editor.isaac.classis.io https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.isaac.classis.io https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.isaac.classis.io https://fonts.gstatic.com;";
+        more_set_headers "default-src 'self' https://cdn.non-prod.isaaccomputerscience.org https://staging.non-prod.isaaccomputerscience.org https://www.youtube-nocookie.com https://www.youtube.com https://api.github.com https://editor-auth.non-prod.isaaccomputerscience.org object-src 'none'; frame-src 'self' https://editor-preview.non-prod.isaaccomputerscience.org https://content-editor.non-prod.isaaccomputerscience.org https://www.youtube-nocookie.com; img-src 'self' data: https://cdn.non-prod.isaaccomputerscience.org https://*.tile.openstreetmap.org https://developers.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://cdn.non-prod.isaaccomputerscience.org https://fonts.gstatic.com;";
     extraTls:
       - hosts:
-          - content-editor.isaac.classis.io
+          - content-editor.non-prod.isaaccomputerscience.org
         secretName: content-editor-isaac
   extraEnvVars:
     - name: REACT_APP_SITE
@@ -108,17 +108,17 @@ isaac-content-editor:
     - name: REACT_APP_CLIENT_ID
       value: f1540415e26cc2a5765a
     - name: REACT_APP_AUTH_URL
-      value: https://editor-auth.isaac.classis.io/access_token
+      value: https://editor-auth.non-prod.isaaccomputerscience.org/access_token
     - name: REACT_APP_GITHUB_OWNER
       value: isaaccomputerscience
     - name: REACT_APP_CONTENT_REPO
       value: rutherford-content
     - name: REACT_APP_PREVIEW_HOST
-      value: https://editor-preview.isaac.classis.io
+      value: https://editor-preview.non-prod.isaaccomputerscience.org
     - name: REACT_APP_API_STAGING_HOST
-      value: https://www.staging.isaac.classis.io
+      value: https://www.staging.non-prod.isaaccomputerscience.org
     - name: REACT_APP_API_HOST
-      value: https://www.isaac.classis.io
+      value: https://www.non-prod.isaaccomputerscience.org
 
 isaac-code-editor:
   image:
@@ -132,13 +132,13 @@ isaac-code-editor:
   ingress:
     enabled: true
     ingressClassName: nginx
-    hostname: code-editor.isaac.classis.io
+    hostname: code-editor.non-prod.isaaccomputerscience.org
     path: "/"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     extraTls:
       - hosts:
-          - code-editor.isaac.classis.io
+          - code-editor.non-prod.isaaccomputerscience.org
         secretName: code-editor-isaac
 
 elastic-search:
@@ -198,14 +198,14 @@ api:
       nginx.ingress.kubernetes.io/rewrite-target: /isaac-api/$2
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - host: www.isaac.classis.io
+      - host: www.non-prod.isaaccomputerscience.org
         paths:
           - path: /api/([^/]+)/(.*)$
             pathType: Prefix
     tls:
       - secretName: www-isaac
         hosts:
-          - www.isaac.classis.io
+          - www.non-prod.isaaccomputerscience.org
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
@@ -342,7 +342,7 @@ editorAuth:
     pullPolicy: Always
   imagePullSecrets: []
   config:
-    allowOriginHeader: https://content-editor.isaac.classis.io
+    allowOriginHeader: https://content-editor.non-prod.isaaccomputerscience.org
     secretName: isaac-editor-auth-secrets
   service:
     type: ClusterIP
@@ -356,14 +356,14 @@ editorAuth:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
     hosts:
-      - host: editor-auth.isaac.classis.io
+      - host: editor-auth.non-prod.isaaccomputerscience.org
         paths:
           - path: /
             pathType: Prefix
     tls:
       - secretName: editor-auth-isaac
         hosts:
-          - editor-auth.isaac.classis.io
+          - editor-auth.non-prod.isaaccomputerscience.org
   resources: {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
